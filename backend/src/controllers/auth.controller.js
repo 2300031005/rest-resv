@@ -1,73 +1,58 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
+const { registerUser, loginUser } = require('../services/auth.service');
 
 // @desc    Register a new user
-// @route   POST /api/auth/register
+// @route   POST /api/v1/auth/register
 // @access  Public
-const registerUser = async (req, res, next) => {
-  try {
-    const { name, email, password, role } = req.body;
-    
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    const user = await User.create({
-      name,
-      email,
-      password,
-      role
-    });
-
-    if (user) {
-      res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id)
-      });
-    } else {
-      res.status(400).json({ message: 'Invalid user data' });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
+const handleRegister = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+  
+  const result = await registerUser(name, email, password);
+  
+  res.status(201).json({
+    success: true,
+    message: 'User registered successfully.',
+    data: result,
+  });
+});
 
 // @desc    Authenticate user & get token
-// @route   POST /api/auth/login
+// @route   POST /api/v1/auth/login
 // @access  Public
-const loginUser = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id)
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'secretkey', {
-    expiresIn: '30d'
+const handleLogin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  
+  const result = await loginUser(email, password);
+  
+  res.status(200).json({
+    success: true,
+    message: 'Login successful.',
+    data: result,
   });
-};
+});
+
+// @desc    Get currently logged in user profile
+// @route   GET /api/v1/auth/profile
+// @access  Private
+const handleProfile = asyncHandler(async (req, res) => {
+  const { _id, name, email, role } = req.user;
+
+  res.status(200).json({
+    success: true,
+    message: 'Profile fetched successfully.',
+    data: {
+      user: {
+        id: _id,
+        name,
+        email,
+        role,
+      },
+    },
+  });
+});
 
 module.exports = {
-  registerUser,
-  loginUser
+  handleRegister,
+  handleLogin,
+  handleProfile,
 };
