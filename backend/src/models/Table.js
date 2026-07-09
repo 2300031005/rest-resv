@@ -1,24 +1,23 @@
 const mongoose = require('mongoose');
 
-const tableSchema = mongoose.Schema(
+const tableSchema = new mongoose.Schema(
   {
     tableNumber: {
       type: Number,
       required: true,
-      unique: true
+      unique: true,
     },
     capacity: {
       type: Number,
-      required: true
+      required: true,
     },
-    status: {
-      type: String,
-      enum: ['available', 'reserved', 'occupied'],
-      default: 'available'
-    }
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

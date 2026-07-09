@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/auth.routes');
+const reservationRoutes = require('./routes/reservation.routes');
+const tableRoutes = require('./routes/table.routes');
 const { errorHandler, notFound } = require('./middleware/error.middleware');
 
 const app = express();
@@ -27,6 +29,8 @@ app.get('/api/v1', (req, res) => {
 
 // Mounted Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1', reservationRoutes);
+app.use('/api/v1', tableRoutes);
 
 // Catch 404 routes and forward to error handler
 app.use(notFound);

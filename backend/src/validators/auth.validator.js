@@ -55,4 +55,5 @@ const loginValidator = [
 module.exports = {
   registerValidator,
   loginValidator,
+  validateRequest,
 };
