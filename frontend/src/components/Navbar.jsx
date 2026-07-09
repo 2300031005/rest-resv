@@ -1,17 +1,45 @@
 import React from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
 
+  const getActiveLinkStyle = ({ isActive }) =>
+    `text-sm font-semibold transition ${
+      isActive ? 'text-indigo-600' : 'text-gray-500 hover:text-gray-900'
+    }`;
+
   return (
     <nav className="bg-white border-b border-gray-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between items-center">
-          <div className="flex items-center">
-            <span className="text-xl font-bold text-indigo-600 tracking-tight">
-              Restaurant Resv
-            </span>
+          <div className="flex items-center space-x-8">
+            <Link to={user?.role === 'admin' ? '/admin' : '/customer'} className="flex items-center">
+              <span className="text-xl font-bold text-indigo-600 tracking-tight">
+                Restaurant Resv
+              </span>
+            </Link>
+            {user && user.role === 'customer' && (
+              <div className="hidden sm:flex sm:space-x-4">
+                <NavLink to="/customer" end className={getActiveLinkStyle}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/customer/create" className={getActiveLinkStyle}>
+                  Book Table
+                </NavLink>
+                <NavLink to="/customer/reservations" className={getActiveLinkStyle}>
+                  My Bookings
+                </NavLink>
+              </div>
+            )}
+            {user && user.role === 'admin' && (
+              <div className="hidden sm:flex sm:space-x-4">
+                <NavLink to="/admin" end className={getActiveLinkStyle}>
+                  Admin Panel
+                </NavLink>
+              </div>
+            )}
           </div>
           <div className="flex items-center space-x-6">
             {user && (

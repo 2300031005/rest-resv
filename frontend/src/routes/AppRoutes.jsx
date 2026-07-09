@@ -7,6 +7,8 @@ import MainLayout from '../layouts/MainLayout';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 import CustomerDashboard from '../pages/customer/Dashboard';
+import CreateReservation from '../pages/customer/CreateReservation';
+import MyReservations from '../pages/customer/MyReservations';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import Loader from '../components/Loader';
 
@@ -56,6 +58,8 @@ const AppRoutes = () => {
         }
       >
         <Route path="/customer" element={<CustomerDashboard />} />
+        <Route path="/customer/create" element={<CreateReservation />} />
+        <Route path="/customer/reservations" element={<MyReservations />} />
       </Route>
 
       {/* Protected Admin Routes */}
