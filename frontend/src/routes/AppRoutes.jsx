@@ -10,6 +10,7 @@ import CustomerDashboard from '../pages/customer/Dashboard';
 import CreateReservation from '../pages/customer/CreateReservation';
 import MyReservations from '../pages/customer/MyReservations';
 import AdminDashboard from '../pages/admin/AdminDashboard';
+import AdminReservations from '../pages/admin/AdminReservations';
 import Loader from '../components/Loader';
 
 // Helper route to redirect logged-in users away from auth pages
@@ -71,6 +72,7 @@ const AppRoutes = () => {
         }
       >
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/reservations" element={<AdminReservations />} />
       </Route>
 
       {/* Fallback routes */}

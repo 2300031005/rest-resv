@@ -38,6 +38,9 @@ const Navbar = () => {
                 <NavLink to="/admin" end className={getActiveLinkStyle}>
                   Admin Panel
                 </NavLink>
+                <NavLink to="/admin/reservations" className={getActiveLinkStyle}>
+                  Manage Bookings
+                </NavLink>
               </div>
             )}
           </div>
