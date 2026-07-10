@@ -22,7 +22,8 @@ API.interceptors.request.use(
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    const isLoginRequest = error.config?.url?.includes('/auth/login');
+    if (error.response && error.response.status === 401 && !isLoginRequest) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       // Redirect to login page if not already there

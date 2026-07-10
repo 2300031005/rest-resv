@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    setLoading(true);
     try {
       const response = await apiLogin(email, password);
       if (response.success && response.data) {
@@ -44,12 +43,10 @@ export const AuthProvider = ({ children }) => {
         setToken(loggedInToken);
         localStorage.setItem('token', loggedInToken);
         localStorage.setItem('user', JSON.stringify(loggedInUser));
-        setLoading(false);
         return response.data;
       }
       throw new Error(response.message || 'Login failed.');
     } catch (error) {
-      setLoading(false);
       throw error;
     }
   };
