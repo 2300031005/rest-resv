@@ -19,6 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Root Route Health check
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Restaurant Reservation Management API Service is running.',
+  });
+});
+
 // Base Route API Health check
 app.get('/api/v1', (req, res) => {
   res.status(200).json({
